@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    h1 {
+      font-size: 5rem;
+    }
+    h2 {
+      font-size: 3rem;
+    }
+    h1, h2, h3, form, ul {
+      text-align: center;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="time"></h1>
+  <h2>Hello, Tak</h2>
+  <h3>Todo List</h3>
+  <form action="" id="form">
+    <label for="input">할 일을 입력하세요</label> <br>
+    <input id="input" type="text">
+    <button id="input-button" type="submit">+</button>
+  </form>
+  <ul id="todo-list">
+  </ul>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
+  <script>
+    axios.get('https://source.unsplash.com/1920x1080/?nature,water')
+      .then(response => {
+        document.body.style.backgroundImage = `url(${response.request.responseURL})`
+        document.body.style.backgroundSize = 'auto'
+        document.body.style.backgroundPosition = 'center'
+        document.body.style.backgroundRepeat = 'no-repeat'
+      })
+
+    const input = document.querySelector('#input')
+    const form = document.querySelector('#form')
+    const button = document.querySelector('#input-button')
+    const todos = document.querySelector('#todo-list')
+    form.addEventListener('submit', function(event){
+        event.preventDefault()
+        // const input = event.target.previousElementSibling // 이벤트가 발생한 대상
+        if (input.value) {
+          // li 하나를 새롭게 만들어서
+          // 값을 넣고 
+          const li = document.createElement('li')
+          console.log(this.previousElementSibling)
+          const deleteButton = document.createElement('button')
+          deleteButton.innerText = '삭제'
+          deleteButton.style.marginLeft = '10px'
+          // todo-list에 붙인다.
+          li.innerText = input.value
+          li.appendChild(deleteButton)
+          deleteButton.addEventListener('click', function(event) {
+            console.log(li)
+            li.remove()
+          })
+          todos.appendChild(li)
+          input.value = ''
+        } else {
+          alert('내용을 입력하세요!')
+      }
+    })
+      // button.addEventListener('click', event => {
+      //   console.log(this) // window
+      // })
+      function checkTime(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      }
+
+      function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        // add a zero in front of numbers<10
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+        t = setTimeout(function() {
+          startTime()
+        }, 500);
+      }
+      startTime();
+  </script>
+</body>
+</html>

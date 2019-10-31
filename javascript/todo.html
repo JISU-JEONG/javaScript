@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id= "time"></h1>
+    <h1>Todo LIst</h1>
+    <form action="" id='form'>
+        <label for="input">할 일을 입력하세요</label>
+        <input type="text" id ="input">
+        <button type='submit' id="input-button">+</button>
+    </form>
+    
+    <ul id="todo-list">
+        <li> +버튼이 눌리면 리스트에 추가되도록 구현하세요.</li>
+    </ul>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        (function () {
+            function checkTime(i) {
+                return (i < 10) ? "0" + i : i;
+            }
+
+            function startTime() {
+                var today = new Date(),
+                    h = checkTime(today.getHours()),
+                    m = checkTime(today.getMinutes()),
+                    s = checkTime(today.getSeconds());
+                document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+                t = setTimeout(function () {
+                    startTime()
+                }, 500);
+            }
+            startTime();
+        })();
+
+        axios.get('https://source.unsplash.com/random/1920x1080')
+            .then(response => {
+                console.log(typeof response)
+                document.body.style.backgroundImage = `url(${response.request.responseURL})`
+                document.body.style.backgroundSize = 'auto'
+                document.body.style.backgroundPosition = 'center'
+                document.body.style.backgroundRepeat = 'no-repeat'
+                return response.data
+            })
+
+
+
+        // const button = document.querySelector('#input-button')
+        // const input = document.querySelector('#input')
+        // const ul = document.querySelector('#todo-list')
+        // input-button.addEventListener('click', function(envent){
+        //     console.log(input.value)
+        //     let li = document.createElement('li')
+        //     li.innerText = input.value
+        //     ul.append(li)
+        // })
+
+        // 탁쌤 코드
+        const input = document.querySelector('#input')
+        const button = document.querySelector("#input-button")
+        const todos = document.querySelector("#todo-list")
+        
+        form.addEventListener('submit', function(event){
+            event.preventDefault()
+            const del_button = document.createElement('button')
+            del_button.innerText = '삭제'
+            const li = document.createElement('li')
+            console.log(event.target.previousElementSibling.value) // 이벤트가 발생한 대상의 이전
+            console.log(this.previousElementSibling)
+            
+            if(input.value)
+            {
+                li.innerText = input.value+' '
+                input.value = ''
+                todos.appendChild(li)
+                li.appendChild(del_button)
+            }
+            del_button.addEventListener('click', function(evnent){
+                todos.removeChild(li)
+            })
+        })
+        
+    </script>
+</body>
+</html>
